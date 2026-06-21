@@ -5,12 +5,12 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from pathlib import Path
 
-countryName = 'Singapore'
+countryName = 'Saudi%20Arabia'
 clearanceGap = 100
 
 # get session id, date start, and date end
 def getSessionInfo(countryName):
-    baselink = f'https://api.openf1.org/v1/sessions?countryName={countryName}&session_type=Qualifying&year=2025'
+    baselink = f'https://api.openf1.org/v1/sessions?country_name={countryName}&session_type=Qualifying&year=2025'
     response = urlopen(baselink)
     data = json.loads(response.read().decode('utf-8'))
     session_id = data[0]['session_key']
