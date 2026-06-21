@@ -4,10 +4,10 @@ import re
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
-countryName = "Belgium"
+countryName = "Singapore"
 debug = False
-x = 0
-y = 0
+x = -3930
+y = -1640
 
 def fileToArray(countryName):
     folder = Path("expy")
@@ -47,7 +47,7 @@ def to_xy_array(coords):
         for x, y in re.findall(r"x:\s*(-?\d+(?:\.\d+)?),\s*y:\s*(-?\d+(?:\.\d+)?)", "\n".join(coords))
     ])
 
-def xy2pct(x, y):
+def xy2pct(x, y): #takes coordinates and finds the % along the track/pit lane it is
     track_coordinates, pit_lane_coordinates = fileToArray(countryName)
     track = to_xy_array(track_coordinates)
     pit = to_xy_array(pit_lane_coordinates)
