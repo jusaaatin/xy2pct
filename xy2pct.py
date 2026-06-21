@@ -1,9 +1,12 @@
 from pathlib import Path
 import numpy as np
 import re
+import matplotlib.pyplot as plt
+from matplotlib.widgets import Button
 
-countryName = "Singapore"
-x = 850
+countryName = "Belgium"
+debug = False
+x = 0
 y = 0
 
 def fileToArray(countryName):
@@ -67,7 +70,24 @@ def xy2pct(x, y, track_coordinates, pit_lane_coordinates):
     print(f"highlighted coordinate: x={highlighted[0]}, y={highlighted[1]}")
     print(f"onTrack: {onTrack}")
 
-    return onTrack, percentage
+    if debug:
+        return onTrack, percentage, highlighted
+    else:
+        return onTrack, percentage
 
+def plot(x, y, highlighted, track_coordinates, pit_lane_coordinates):
+    track = to_xy_array(track_coordinates)
+    pit = to_xy_array(pit_lane_coordinates)
 
+    plt.scatter(track[:, 0], track[:, 1], color='blue', label='Track')
+    plt.scatter(pit[:, 0], pit[:, 1], color='green', label='Pit Lane')
+    plt.scatter(x, y, color='red', label='Input Point', zorder=5)
+    plt.scatter(highlighted[0], highlighted[1], color='orange', label='Highlighted Point', zorder=5)
+    plt.axhline(0, color='black', linewidth=0.5, linestyle='--')
+    plt.axvline(0, color='black', linewidth=0.5, linestyle='--')
+    plt.legend()
+    plt.show()
+    
 print(xy2pct(x, y, *fileToArray(countryName)))
+if debug:
+    plot(x, y, xy2pct(x, y, *fileToArray(countryName))[2], *fileToArray(countryName))
