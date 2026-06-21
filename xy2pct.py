@@ -47,7 +47,8 @@ def to_xy_array(coords):
         for x, y in re.findall(r"x:\s*(-?\d+(?:\.\d+)?),\s*y:\s*(-?\d+(?:\.\d+)?)", "\n".join(coords))
     ])
 
-def xy2pct(x, y, track_coordinates, pit_lane_coordinates):
+def xy2pct(x, y):
+    track_coordinates, pit_lane_coordinates = fileToArray(countryName)
     track = to_xy_array(track_coordinates)
     pit = to_xy_array(pit_lane_coordinates)
 
@@ -88,6 +89,6 @@ def plot(x, y, highlighted, track_coordinates, pit_lane_coordinates):
     plt.legend()
     plt.show()
     
-print(xy2pct(x, y, *fileToArray(countryName)))
+print(xy2pct(x, y))
 if debug:
-    plot(x, y, xy2pct(x, y, *fileToArray(countryName))[2], *fileToArray(countryName))
+    plot(x, y, xy2pct(x, y)[2], *fileToArray(countryName))
