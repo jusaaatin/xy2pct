@@ -5,7 +5,7 @@ from matplotlib.widgets import Button
 
 countryName = "Belgium"
 
-
+#imports expy files and turns them into separate track and pitlane coordinate arrays
 def fileToArray(countryName):
     folder = Path("expy")
     folder.mkdir(exist_ok=True)
@@ -26,7 +26,7 @@ def fileToArray(countryName):
         line = line.strip()
 
         if line == "":
-            continue
+            continue #ignore blank lines
         if line == "Track":
             current_section = "track"
         elif line == "Pit Lane":
@@ -38,7 +38,7 @@ def fileToArray(countryName):
 
     return track_coordinates, pit_lane_coordinates
 
-
+# plots track and pit lane coordinates
 def draw_plot(ax, track_coordinates, pit_lane_coordinates):
     ax.clear()
 
