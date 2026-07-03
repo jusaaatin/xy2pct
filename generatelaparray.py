@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from pathlib import Path
 
-countryName = 'Monaco'
+countryName = 'Britain'
 clearanceGap = 100
 
 # get session id, date start, and date end
