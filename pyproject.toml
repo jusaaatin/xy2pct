@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "xy2pct"
-version = "0.1.2"
+version = "0.1.3"
 description = "Convert track coordinates to percentages along a lap"
 readme = "README.md"
 authors = [{ name = "jusaaatin", email = "jusaaatin@gmail.com" }]
