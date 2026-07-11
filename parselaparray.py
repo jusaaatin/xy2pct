@@ -3,13 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
-countryName = "Belgium"
+circuit_short_name = "Belgium"
 
 #imports expy files and turns them into separate track and pitlane coordinate arrays
-def fileToArray(countryName):
+def fileToArray(circuit_short_name):
     folder = Path("expy")
     folder.mkdir(exist_ok=True)
-    file_path = folder / f"{countryName}.txt"
+    file_path = folder / f"{circuit_short_name}.txt"
 
     if not file_path.exists():
         print(f"File {file_path} does not exist.")
@@ -46,12 +46,12 @@ def draw_plot(ax, track_coordinates, pit_lane_coordinates):
     y_values = []
 
     for coordinate in track_coordinates:
-        x, y = coordinate.split(", ")
+        x, y, *_ = coordinate.split(", ")
         x_values.append(float(x.split(": ")[1]))
         y_values.append(float(y.split(": ")[1]))
 
     for coordinate in pit_lane_coordinates:
-        x, y = coordinate.split(", ")
+        x, y, *_ = coordinate.split(", ")
         x_values.append(float(x.split(": ")[1]))
         y_values.append(float(y.split(": ")[1]))
 
@@ -65,21 +65,21 @@ def draw_plot(ax, track_coordinates, pit_lane_coordinates):
 
     ax.axhline(0, color="black", linewidth=0.5, linestyle="--")
     ax.axvline(0, color="black", linewidth=0.5, linestyle="--")
-    ax.set_title(f"{countryName} Track and Pit Lane")
+    ax.set_title(f"{circuit_short_name} Track and Pit Lane")
 
 
-def plot(countryName):
+def plot(circuit_short_name):
     fig, ax = plt.subplots()
     plt.subplots_adjust(bottom=0.2)
 
-    track_coordinates, pit_lane_coordinates = fileToArray(countryName)
+    track_coordinates, pit_lane_coordinates = fileToArray(circuit_short_name)
     draw_plot(ax, track_coordinates, pit_lane_coordinates)
 
     button_ax = plt.axes([0.4, 0.05, 0.2, 0.075])
     reload_button = Button(button_ax, "Reload")
 
     def reload(event):
-        track_coordinates, pit_lane_coordinates = fileToArray(countryName)
+        track_coordinates, pit_lane_coordinates = fileToArray(circuit_short_name)
         draw_plot(ax, track_coordinates, pit_lane_coordinates)
         fig.canvas.draw_idle()
 
@@ -87,5 +87,7 @@ def plot(countryName):
 
     plt.show()
 
+def parseLapArray():
+    plot(circuit_short_name)
 
-plot(countryName)
+parseLapArray()

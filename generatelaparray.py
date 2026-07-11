@@ -5,12 +5,12 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from pathlib import Path
 
-countryName = 'Britain'
-clearanceGap = 100
+circuit_short_name = 'Singapore'
+clearanceGap = 50
 
 # get session id, date start, and date end
-def getSessionInfo(countryName):
-    baselink = f'https://api.openf1.org/v1/sessions?country_name={countryName}&session_type=Qualifying&year=2025'
+def getSessionInfo(circuit_short_name):
+    baselink = f'https://api.openf1.org/v1/sessions?circuit_short_name={circuit_short_name}&session_type=Qualifying&year=2025'
     response = urlopen(baselink)
     data = json.loads(response.read().decode('utf-8'))
     session_id = data[0]['session_key']
@@ -26,14 +26,14 @@ def getCoordinateArray(session_id, date_start):
     response = urlopen(link)
     data = json.loads(response.read().decode('utf-8'))
     for item in data:
-        datapack = 'x: {x}, y: {y}'.format(x=item['x'], y=item['y'])
+        datapack = 'x: {x}, y: {y}, z: {z}'.format(x=item['x'], y=item['y'], z=item['z'])
         #delete all x=0 y=0 pairs
         if item['x'] == 0 and item['y'] == 0:
             continue
         #make it so that datapack checks that each x y pair is not in +-clearanceGap of any in coordinates
         is_unique = True
         for existing in coordinates:
-            existing_x, existing_y = existing.split(', ')
+            existing_x, existing_y, *_ = existing.split(', ')
             if abs(float(existing_x.split(': ')[1]) - float(item['x'])) <= clearanceGap and abs(float(existing_y.split(': ')[1]) - float(item['y'])) <= clearanceGap:
                 is_unique = False
                 break
@@ -46,7 +46,7 @@ def plot(coordinates):
     x_values = []
     y_values = []
     for coordinate in coordinates:
-        x, y = coordinate.split(', ')
+        x, y, *_ = coordinate.split(', ')
         x_values.append(float(x.split(': ')[1]))
         y_values.append(float(y.split(': ')[1]))
     #make first and last color red and the rest gradient from light blue to dark blue
@@ -55,14 +55,14 @@ def plot(coordinates):
         plt.scatter(x_values[i], y_values[i], c=[colors[i]], marker='o')
     plt.axhline(0, color='black', linewidth=0.5, linestyle='--')
     plt.axvline(0, color='black', linewidth=0.5, linestyle='--')
-    plt.title(f"{countryName} Lap Array")
+    plt.title(f"{circuit_short_name} Lap Array")
     plt.show()
 
 #generates file with track and pit lane coordinates
-def exportToFile(coordinates, countryName):
+def exportToFile(coordinates, circuit_short_name):
     folder = Path("expy")
     folder.mkdir(exist_ok=True)
-    filename = folder / f"{countryName}.txt"
+    filename = folder / f"{circuit_short_name}.txt"
     with open(filename, "w") as f:
         f.write("Track\n")
         f.write("\n".join(coordinates))
@@ -70,8 +70,10 @@ def exportToFile(coordinates, countryName):
     
 
 
+def generateLapArray():
+    coordinatearray = getCoordinateArray(*getSessionInfo(circuit_short_name))
+    exportToFile(coordinatearray, circuit_short_name)
 
-coordinatearray = getCoordinateArray(*getSessionInfo(countryName))
-exportToFile(coordinatearray, countryName)
+    plot(coordinatearray)
 
-plot(coordinatearray)
+generateLapArray()

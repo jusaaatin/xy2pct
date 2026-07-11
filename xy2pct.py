@@ -4,15 +4,16 @@ import re
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
-countryName = "Singapore"
-debug = False
+circuit_short_name = "Spa-Francorchamps"
+debug = True
 x = -3930
 y = -1640
+z = 0
 
-def fileToArray(countryName):
+def fileToArray(circuit_short_name):
     folder = Path("expy")
     folder.mkdir(exist_ok=True)
-    file_path = folder / f"{countryName}.txt"
+    file_path = folder / f"{circuit_short_name}.txt"
 
     if not file_path.exists():
         print(f"File {file_path} does not exist.")
@@ -41,18 +42,21 @@ def fileToArray(countryName):
 
     return track_coordinates, pit_lane_coordinates
 
-def to_xy_array(coords):
+def to_xyz_array(coords):
     return np.array([
-        [float(x), float(y)]
-        for x, y in re.findall(r"x:\s*(-?\d+(?:\.\d+)?),\s*y:\s*(-?\d+(?:\.\d+)?)", "\n".join(coords))
+        [float(x), float(y), float(z) if z is not None else 0.0]
+        for x, y, z in re.findall(
+            r"x:\s*(-?\d+(?:\.\d+)?),\s*y:\s*(-?\d+(?:\.\d+)?)(?:,\s*z:\s*(-?\d+(?:\.\d+)?))?",
+            "\n".join(coords),
+        )
     ])
 
-def xy2pct(x, y): #takes coordinates and finds the % along the track/pit lane it is
-    track_coordinates, pit_lane_coordinates = fileToArray(countryName)
-    track = to_xy_array(track_coordinates)
-    pit = to_xy_array(pit_lane_coordinates)
+def xy2pct(x, y, z, circuit_short_name): #takes coordinates and finds the % along the track/pit lane it is
+    track_coordinates, pit_lane_coordinates = fileToArray(circuit_short_name)
+    track = to_xyz_array(track_coordinates)
+    pit = to_xyz_array(pit_lane_coordinates)
 
-    point = np.array([x, y])
+    point = np.array([x, y, z])
 
     track_i = np.argmin(np.sum((track - point) ** 2, axis=1))
     pit_i = np.argmin(np.sum((pit - point) ** 2, axis=1))
@@ -68,7 +72,7 @@ def xy2pct(x, y): #takes coordinates and finds the % along the track/pit lane it
     highlighted = coords[index]
     percentage = index / len(coords) * 100
 
-    print(f"highlighted coordinate: x={highlighted[0]}, y={highlighted[1]}")
+    print(f"highlighted coordinate: x={highlighted[0]}, y={highlighted[1]}, z={highlighted[2]}")
     print(f"onTrack: {onTrack}")
 
     if debug:
@@ -77,8 +81,8 @@ def xy2pct(x, y): #takes coordinates and finds the % along the track/pit lane it
         return onTrack, percentage
 
 def plot(x, y, highlighted, track_coordinates, pit_lane_coordinates):
-    track = to_xy_array(track_coordinates)
-    pit = to_xy_array(pit_lane_coordinates)
+    track = to_xyz_array(track_coordinates)
+    pit = to_xyz_array(pit_lane_coordinates)
 
     plt.scatter(track[:, 0], track[:, 1], color='blue', label='Track')
     plt.scatter(pit[:, 0], pit[:, 1], color='green', label='Pit Lane')
@@ -89,6 +93,8 @@ def plot(x, y, highlighted, track_coordinates, pit_lane_coordinates):
     plt.legend()
     plt.show()
     
-print(xy2pct(x, y))
+    print(xy2pct(x, y, z, circuit_short_name))
+
+
 if debug:
-    plot(x, y, xy2pct(x, y)[2], *fileToArray(countryName))
+    plot(x, y, xy2pct(x, y, z, circuit_short_name)[2], *fileToArray(circuit_short_name))
