@@ -51,18 +51,32 @@ def to_xyz_array(coords):
         )
     ])
 
-def xy2pct(x, y, z, circuit_short_name): #takes coordinates and finds the % along the track/pit lane it is
+def xy2pct(x, y, z=None, circuit_short_name=None): #takes coordinates and finds the % along the track/pit lane it is
+    if isinstance(z, str) and circuit_short_name is None:
+        circuit_short_name = z
+        z = None
+
+    if circuit_short_name is None:
+        circuit_short_name = globals()["circuit_short_name"]
+
     track_coordinates, pit_lane_coordinates = fileToArray(circuit_short_name)
     track = to_xyz_array(track_coordinates)
     pit = to_xyz_array(pit_lane_coordinates)
 
-    point = np.array([x, y, z])
+    if z is None:
+        point = np.array([x, y])
+        track_compare = track[:, :2]
+        pit_compare = pit[:, :2]
+    else:
+        point = np.array([x, y, z])
+        track_compare = track
+        pit_compare = pit
 
-    track_i = np.argmin(np.sum((track - point) ** 2, axis=1))
-    pit_i = np.argmin(np.sum((pit - point) ** 2, axis=1))
+    track_i = np.argmin(np.sum((track_compare - point) ** 2, axis=1))
+    pit_i = np.argmin(np.sum((pit_compare - point) ** 2, axis=1))
 
-    track_dist = np.sum((track[track_i] - point) ** 2)
-    pit_dist = np.sum((pit[pit_i] - point) ** 2)
+    track_dist = np.sum((track_compare[track_i] - point) ** 2)
+    pit_dist = np.sum((pit_compare[pit_i] - point) ** 2)
 
     onTrack = track_dist <= pit_dist
 
@@ -72,7 +86,10 @@ def xy2pct(x, y, z, circuit_short_name): #takes coordinates and finds the % alon
     highlighted = coords[index]
     percentage = index / len(coords) * 100
 
-    print(f"highlighted coordinate: x={highlighted[0]}, y={highlighted[1]}, z={highlighted[2]}")
+    if z is None:
+        print(f"highlighted coordinate: x={highlighted[0]}, y={highlighted[1]}")
+    else:
+        print(f"highlighted coordinate: x={highlighted[0]}, y={highlighted[1]}, z={highlighted[2]}")
     print(f"onTrack: {onTrack}")
 
     if debug:
