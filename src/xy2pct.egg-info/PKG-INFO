@@ -1,0 +1,48 @@
+Metadata-Version: 2.4
+Name: xy2pct
+Version: 0.1.0
+Summary: Convert track coordinates to percentages along a lap
+Author-email: jusaaatin <jusaaatin@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2026 JUSAAATIN
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Keywords: xy2pct,f1,percentages,coordinates,track,lap,data,analysis
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Developers
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Dynamic: license-file
+
+workflow:
+
+1. use [generatelaparray.py](https://github.com/jusaaatin/f1-xy2pct/blob/main/generatelaparray.py) to spit out a file with x, y, and z coordinates for the track
+2. manually delete extra data points and assign relevant ones to pit lane
+3. use [parselaparray.py](https://github.com/jusaaatin/f1-xy2pct/blob/main/parselaparray.py) to check work (sample code to also go from file to array)
+4. use [xy2pct.py](https://github.com/jusaaatin/f1-xy2pct/blob/main/xy2pct.py) to convert any coordinate to a percentage along the track

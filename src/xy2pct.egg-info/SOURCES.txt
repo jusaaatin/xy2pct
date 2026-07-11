@@ -1,0 +1,13 @@
+LICENSE
+README.md
+pyproject.toml
+src/xy2pct/__init__.py
+src/xy2pct/xy2pct.py
+src/xy2pct.egg-info/PKG-INFO
+src/xy2pct.egg-info/SOURCES.txt
+src/xy2pct.egg-info/dependency_links.txt
+src/xy2pct.egg-info/requires.txt
+src/xy2pct.egg-info/top_level.txt
+src/xy2pct/mapgeneration/belgiumtrackmap.py
+src/xy2pct/mapgeneration/generatelaparray.py
+src/xy2pct/mapgeneration/parselaparray.py
