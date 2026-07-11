@@ -60,6 +60,9 @@ def xy2pct(x, y, z=None, circuit_short_name=None): #takes coordinates and finds 
         circuit_short_name = globals()["circuit_short_name"]
 
     track_coordinates, pit_lane_coordinates = fileToArray(circuit_short_name)
+    if track_coordinates is None or pit_lane_coordinates is None:
+        print(f"Error: Could not read coordinates for circuit '{circuit_short_name}'.")
+        return None, None
     track = to_xyz_array(track_coordinates)
     pit = to_xyz_array(pit_lane_coordinates)
 
