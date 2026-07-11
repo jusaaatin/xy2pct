@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
 circuit_short_name = "Spa-Francorchamps"
-debug = True
+debug = False
 x = -3930
 y = -1640
 z = 0
