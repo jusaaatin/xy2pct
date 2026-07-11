@@ -42,8 +42,12 @@ jobs:
           pytest
   publish:
     runs-on: ubuntu-latest
-    steps:
+    
+    permissions:
+      id-token: write
+      contents: read
 
+    steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
