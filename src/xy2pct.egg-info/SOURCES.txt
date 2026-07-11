@@ -8,6 +8,9 @@ src/xy2pct.egg-info/SOURCES.txt
 src/xy2pct.egg-info/dependency_links.txt
 src/xy2pct.egg-info/requires.txt
 src/xy2pct.egg-info/top_level.txt
+src/xy2pct/expy/Singapore.txt
+src/xy2pct/expy/Spa-Francorchamps.txt
 src/xy2pct/mapgeneration/belgiumtrackmap.py
 src/xy2pct/mapgeneration/generatelaparray.py
 src/xy2pct/mapgeneration/parselaparray.py
+tests/test_xy2pct.py

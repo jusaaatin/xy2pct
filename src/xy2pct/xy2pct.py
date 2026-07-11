@@ -3,6 +3,7 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
+from importlib.resources import files
 
 circuit_short_name = "Spa-Francorchamps"
 debug = False
@@ -11,15 +12,15 @@ y = -1640
 z = 0
 
 def fileToArray(circuit_short_name):
-    folder = Path("expy")
-    folder.mkdir(exist_ok=True)
-    file_path = folder / f"{circuit_short_name}.txt"
+    file_path = files("xy2pct").joinpath("expy", f"{circuit_short_name}.txt")
 
-    if not file_path.exists():
-        print(f"File {file_path} does not exist.")
-        return [], []
+    if not file_path.is_file():
+        raise FileNotFoundError(
+            f"Track '{circuit_short_name}' not found "
+            f"({file_path})."
+        )
 
-    with open(file_path, "r") as file:
+    with file_path.open("r", encoding="utf-8") as file:
         lines = file.readlines()
 
     track_coordinates = []
@@ -29,9 +30,9 @@ def fileToArray(circuit_short_name):
     for line in lines:
         line = line.strip()
 
-        if line == "":
+        if not line:
             continue
-        if line == "Track":
+        elif line == "Track":
             current_section = "track"
         elif line == "Pit Lane":
             current_section = "pit_lane"
