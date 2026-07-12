@@ -19,4 +19,7 @@ pip install xy2pct
 
 
 ### Use xy2pct
+```
+def xy2pct(x, y, z, circuit_short_name) -> [onTrack, percentage]
+```
 1. use the function xy2pct(x, y, z, circuit_short_name) to convert any x, y, and z(optional) to a percentage along the track you specify in circuit_short_name. to find the variable, use the openf1 docs: https://api.openf1.org/v1/meetings?year=2026&country_name=Singapore and replace the country name with the one you want, and then find the name beside `circuit_short_name`.
