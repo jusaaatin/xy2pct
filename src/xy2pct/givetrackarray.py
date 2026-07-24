@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-TRACK_DATA_DIRECTORY = Path("src/xy2pct/expy")
+TRACK_DATA_DIRECTORY = Path(__file__).resolve().parent / "expy"
 
 
 def _read_track_file(file_path: Path) -> tuple[str, list[str], list[str]]:

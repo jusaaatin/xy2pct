@@ -19,7 +19,8 @@ def test_givetrackarray_raw_returns_complete_file():
     assert "Pit Lane" in raw_file
 
 
-def test_givetrackarray_wildcard_returns_all_maps():
+def test_givetrackarray_wildcard_returns_all_maps(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
     result = givetrackarray("*")
 
     assert result[::3] == ["Hungaroring", "Singapore", "Spa-Francorchamps"]
