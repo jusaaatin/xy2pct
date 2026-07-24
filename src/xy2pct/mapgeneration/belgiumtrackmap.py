@@ -1,13 +1,17 @@
-from urllib.request import urlopen
-import json
+import sys
+from pathlib import Path
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+# Make direct execution use this checkout's package instead of an older installed copy.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from xy2pct.openf1 import get_json
 
 allx = []
 ally = []
 
-response = urlopen('https://api.openf1.org/v1/location?session_key=9939&date>2025-07-27T13:00:00.000&date<2025-07-27T13:20:00.000')
-data = json.loads(response.read().decode('utf-8'))
+data = get_json('https://api.openf1.org/v1/location?session_key=9939&date>2025-07-27T13:00:00.000&date<2025-07-27T13:20:00.000')
 for each in data:
     allx.append(each['x'])
     ally.append(each['y'])

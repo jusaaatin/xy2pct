@@ -12,8 +12,8 @@ pip install xy2pct
 ## Workflow
 
 ### Create track map 
-1. create an "expy" folder in the same directory as your current python file
-2. use [generatelaparray.py](https://github.com/jusaaatin/f1-xy2pct/blob/main/generatelaparray.py) to spit out a file with x, y, and z coordinates for the track. The data will appear in '(circuit_short_name).json'.
+1. use the `src/xy2pct/expy` folder for generated track files
+2. use [generatelaparray.py](https://github.com/jusaaatin/f1-xy2pct/blob/main/generatelaparray.py) to spit out a file with x, y, and z coordinates for the track. The data will appear in `src/xy2pct/expy/(circuit_short_name).txt`.
 3. manually delete extra data points and assign relevant ones to pit lane by moving them under "Pit Lane:"
 4. use [parselaparray.py](https://github.com/jusaaatin/f1-xy2pct/blob/main/parselaparray.py) to check work (sample code to also go from file to array)
 

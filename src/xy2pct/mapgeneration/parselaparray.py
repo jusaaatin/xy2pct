@@ -3,11 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
-circuit_short_name = "Belgium"
+circuit_short_name = "Singapore"
 
-#imports expy files and turns them into separate track and pitlane coordinate arrays
+# Imports files from src/xy2pct/expy and turns them into separate track and pitlane coordinate arrays.
 def fileToArray(circuit_short_name):
-    folder = Path("expy")
+    folder = Path("src/xy2pct/expy")
     folder.mkdir(exist_ok=True)
     file_path = folder / f"{circuit_short_name}.txt"
 

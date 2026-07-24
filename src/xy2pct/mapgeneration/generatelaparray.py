@@ -1,18 +1,21 @@
-from urllib.request import urlopen
-import json
+import sys
+from pathlib import Path
+
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
-from pathlib import Path
 
-circuit_short_name = 'Singapore'
+# Make direct execution use this checkout's package instead of an older installed copy.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from xy2pct.openf1 import get_json
+
+circuit_short_name = 'Hungaroring'
 clearanceGap = 50
 
 # get session id, date start, and date end
 def getSessionInfo(circuit_short_name):
     baselink = f'https://api.openf1.org/v1/sessions?circuit_short_name={circuit_short_name}&session_type=Qualifying&year=2025'
-    response = urlopen(baselink)
-    data = json.loads(response.read().decode('utf-8'))
+    data = get_json(baselink)
     session_id = data[0]['session_key']
     date_start = data[0]['date_start']
     print(date_start)
@@ -23,8 +26,7 @@ def getCoordinateArray(session_id, date_start):
     date_end = datetime.fromisoformat(date_start) + timedelta(minutes=30)
     coordinates = []
     link = f'https://api.openf1.org/v1/location?driver_number=4&session_key={session_id}&date>{date_start}&date<{date_end.isoformat()}'
-    response = urlopen(link)
-    data = json.loads(response.read().decode('utf-8'))
+    data = get_json(link)
     for item in data:
         datapack = 'x: {x}, y: {y}, z: {z}'.format(x=item['x'], y=item['y'], z=item['z'])
         #delete all x=0 y=0 pairs
@@ -60,7 +62,7 @@ def plot(coordinates):
 
 #generates file with track and pit lane coordinates
 def exportToFile(coordinates, circuit_short_name):
-    folder = Path("expy")
+    folder = Path("src/xy2pct/expy")
     folder.mkdir(exist_ok=True)
     filename = folder / f"{circuit_short_name}.txt"
     with open(filename, "w") as f:

@@ -3,16 +3,15 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
-from importlib.resources import files
 
-circuit_short_name = "Spa-Francorchamps"
+circuit_short_name = "Hungaroring"
 debug = False
 x = -3930
 y = -1640
 z = 0
 
 def fileToArray(circuit_short_name):
-    file_path = files("xy2pct").joinpath("expy", f"{circuit_short_name}.txt")
+    file_path = Path("src/xy2pct/expy") / f"{circuit_short_name}.txt"
 
     if not file_path.is_file():
         raise FileNotFoundError(
